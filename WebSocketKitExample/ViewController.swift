@@ -29,8 +29,8 @@ class ViewController: UIViewController, UITextFieldDelegate, WSKWebSocketDelegat
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: view.window)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: view.window)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: view.window)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: view.window)
         textField.becomeFirstResponder()
         webSocket.open()
     }
@@ -44,21 +44,21 @@ class ViewController: UIViewController, UITextFieldDelegate, WSKWebSocketDelegat
         sendText()
     }
 
-    private dynamic func keyboardWillShow(_ notification: Notification) {
-        let keyboardFrame = notification.userInfo![UIKeyboardFrameEndUserInfoKey] as! CGRect
-        let animationCurveRawValue = notification.userInfo![UIKeyboardAnimationCurveUserInfoKey] as! Int
-        let animationCurve = UIViewAnimationCurve(rawValue: animationCurveRawValue)!
-        let duration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! TimeInterval
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        let keyboardFrame = notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! CGRect
+        let animationCurveRawValue = notification.userInfo![UIResponder.keyboardAnimationCurveUserInfoKey] as! Int
+        let animationCurve = UIView.AnimationCurve(rawValue: animationCurveRawValue)!
+        let duration = notification.userInfo![UIResponder.keyboardAnimationDurationUserInfoKey] as! TimeInterval
         toolbarBottomLayoutConstraint.constant = keyboardFrame.height
         UIView.animate(withDuration: duration, delay: 0, options: animationCurve.keyboardOptions, animations: { [weak self] in
             self?.view.layoutIfNeeded()
         }, completion: nil)
     }
 
-    private dynamic func keyboardWillHide(_ notification: Notification) {
-        let animationCurveRawValue = notification.userInfo![UIKeyboardAnimationCurveUserInfoKey] as! Int
-        let animationCurve = UIViewAnimationCurve(rawValue: animationCurveRawValue)!
-        let duration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! TimeInterval
+    @objc private func keyboardWillHide(_ notification: Notification) {
+        let animationCurveRawValue = notification.userInfo![UIResponder.keyboardAnimationCurveUserInfoKey] as! Int
+        let animationCurve = UIView.AnimationCurve(rawValue: animationCurveRawValue)!
+        let duration = notification.userInfo![UIResponder.keyboardAnimationDurationUserInfoKey] as! TimeInterval
         toolbarBottomLayoutConstraint.constant = originalToolbarBottomLayoutConstraintConstant
         UIView.animate(withDuration: duration, delay: 0, options: animationCurve.keyboardOptions, animations: { [weak self] in
             self?.view.layoutIfNeeded()
@@ -77,8 +77,8 @@ class ViewController: UIViewController, UITextFieldDelegate, WSKWebSocketDelegat
     }
 
     private func scrollTextViewToBottom() {
-        if textView.text.characters.count > 0 {
-            let bottomRange = NSRange(location: textView.text.characters.count - 1, length: 1)
+        if textView.text.count > 0 {
+            let bottomRange = NSRange(location: textView.text.count - 1, length: 1)
             textView.scrollRangeToVisible(bottomRange)
         }
     }
@@ -94,35 +94,35 @@ class ViewController: UIViewController, UITextFieldDelegate, WSKWebSocketDelegat
 
     func webSocketDidOpen(_ webSocket: WSKWebSocket) {
         let attributedText = NSMutableAttributedString(attributedString: textView.attributedText)
-        attributedText.append(NSAttributedString(string: "Connection opened\n", attributes: [NSForegroundColorAttributeName: UIColor.lightGray]))
+        attributedText.append(NSAttributedString(string: "Connection opened\n", attributes: [.foregroundColor: UIColor.lightGray]))
         textView.attributedText = attributedText
     }
 
     func webSocket(_ webSocket: WSKWebSocket, didReceiveMessage message: String) {
         let attributedText = NSMutableAttributedString(attributedString: textView.attributedText)
-        attributedText.append(NSAttributedString(string: message + "\n", attributes: [NSForegroundColorAttributeName: UIColor.blue]))
+        attributedText.append(NSAttributedString(string: message + "\n", attributes: [.foregroundColor: UIColor.blue]))
         textView.attributedText = attributedText
         scrollTextViewToBottom()
     }
 
     func webSocketDidClose(_ webSocket: WSKWebSocket) {
         let attributedText = NSMutableAttributedString(attributedString: textView.attributedText)
-        attributedText.append(NSAttributedString(string: "Connection closed\n", attributes: [NSForegroundColorAttributeName: UIColor.lightGray]))
+        attributedText.append(NSAttributedString(string: "Connection closed\n", attributes: [.foregroundColor: UIColor.lightGray]))
         textView.attributedText = attributedText
     }
 
     func webSocket(_ webSocket: WSKWebSocket, didFailWithError error: Error) {
         let attributedText = NSMutableAttributedString(attributedString: textView.attributedText)
-        attributedText.append(NSAttributedString(string: "Connection error\n", attributes: [NSForegroundColorAttributeName: UIColor.red]))
+        attributedText.append(NSAttributedString(string: "Connection error\n", attributes: [.foregroundColor: UIColor.red]))
         textView.attributedText = attributedText
     }
 
 }
 
-private extension UIViewAnimationCurve {
+private extension UIView.AnimationCurve {
 
-    var keyboardOptions: UIViewAnimationOptions {
-        return UIViewAnimationOptions(rawValue: UInt(rawValue << 16))
+    var keyboardOptions: UIView.AnimationOptions {
+        return UIView.AnimationOptions(rawValue: UInt(rawValue << 16))
     }
     
 }
