@@ -25,3 +25,4 @@ Usage
 -----
 
 See the example codes in `WebSocketKitExample/ViewController.swift`.
+To run the example app, you need to install [echo-server](https://github.com/jmalloc/echo-server) and run it beforehand.

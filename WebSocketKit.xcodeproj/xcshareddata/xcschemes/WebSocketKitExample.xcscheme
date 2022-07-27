@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5BEE15131F6C541D002FB9DB"
-               BuildableName = "WebSocketKit.framework"
-               BlueprintName = "WebSocketKit"
+               BlueprintIdentifier = "5BEE15571F6D2F48002FB9DB"
+               BuildableName = "WebSocketKitExample.app"
+               BlueprintName = "WebSocketKitExample"
                ReferencedContainer = "container:WebSocketKit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -27,26 +27,7 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5BEE15131F6C541D002FB9DB"
-            BuildableName = "WebSocketKit.framework"
-            BlueprintName = "WebSocketKit"
-            ReferencedContainer = "container:WebSocketKit.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5BEE151C1F6C541D002FB9DB"
-               BuildableName = "WebSocketKitTests.xctest"
-               BlueprintName = "WebSocketKitTests"
-               ReferencedContainer = "container:WebSocketKit.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -59,15 +40,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5BEE15131F6C541D002FB9DB"
-            BuildableName = "WebSocketKit.framework"
-            BlueprintName = "WebSocketKit"
+            BlueprintIdentifier = "5BEE15571F6D2F48002FB9DB"
+            BuildableName = "WebSocketKitExample.app"
+            BlueprintName = "WebSocketKitExample"
             ReferencedContainer = "container:WebSocketKit.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -75,15 +57,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5BEE15131F6C541D002FB9DB"
-            BuildableName = "WebSocketKit.framework"
-            BlueprintName = "WebSocketKit"
+            BlueprintIdentifier = "5BEE15571F6D2F48002FB9DB"
+            BuildableName = "WebSocketKitExample.app"
+            BlueprintName = "WebSocketKitExample"
             ReferencedContainer = "container:WebSocketKit.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

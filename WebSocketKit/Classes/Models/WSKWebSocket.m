@@ -51,7 +51,7 @@ static NSString *const kOnOpenHandlerName = @"onopen";
     self = [super init];
     if (self) {
         _url = url;
-        _protocols = protocols;
+        _protocols = [protocols copy];
         WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
         WKUserContentController *userContentController = [[WKUserContentController alloc] init];
         [userContentController addScriptMessageHandler:self name:kOnCloseHandlerName];
@@ -189,12 +189,13 @@ static NSString *const kOnOpenHandlerName = @"onopen";
 - (nullable id)synchronousEvaluateJavaScriptInWebView:(NSString *)source error:(NSError *__autoreleasing _Nullable *)error {
     __block BOOL evaluationIsFinished = NO;
     __block id returnObject = nil;
+    __block NSError *returnError = nil;
     [_webView evaluateJavaScript:source completionHandler:^(id _Nullable object, NSError *_Nullable evaluationError){
         if (object) {
             returnObject = object;
         }
         if (evaluationError) {
-            *error = evaluationError;
+            returnError = evaluationError;
         }
         evaluationIsFinished = YES;
     }];
@@ -205,6 +206,9 @@ static NSString *const kOnOpenHandlerName = @"onopen";
             [currentRunLoop runUntilDate:date];
         }
     } while (!evaluationIsFinished);
+    if (returnError && error) {
+        *error = returnError;
+    }
     return returnObject;
 }
 
@@ -231,11 +235,10 @@ static NSString *const kOnOpenHandlerName = @"onopen";
         }
     } else if ([messageName isEqualToString:kOnErrorHandlerName]) {
         if ([_delegate respondsToSelector:@selector(webSocket:didFailWithError:)]) {
-            NSAssert([[message body] isKindOfClass:[NSString class]], @"`[message body]` should be a String.");
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"",
-                                      NSLocalizedDescriptionKey, @"An error occured.",
-                                      NSLocalizedFailureReasonErrorKey, [message body],
-                                      nil];
+            NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObject:@"An error occurred." forKey:NSLocalizedDescriptionKey];
+            if ([[message body] isKindOfClass:[NSString class]]) {
+                [userInfo setObject:[message body] forKey:NSLocalizedFailureReasonErrorKey];
+            }
             NSError *error = [NSError errorWithDomain:WSKErrorDomain code:WSKGenericError userInfo:userInfo];
             [_delegate webSocket:self didFailWithError:error];
         }
