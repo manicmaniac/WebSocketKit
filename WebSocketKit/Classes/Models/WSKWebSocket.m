@@ -231,11 +231,10 @@ static NSString *const kOnOpenHandlerName = @"onopen";
         }
     } else if ([messageName isEqualToString:kOnErrorHandlerName]) {
         if ([_delegate respondsToSelector:@selector(webSocket:didFailWithError:)]) {
-            NSAssert([[message body] isKindOfClass:[NSString class]], @"`[message body]` should be a String.");
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"",
-                                      NSLocalizedDescriptionKey, @"An error occured.",
-                                      NSLocalizedFailureReasonErrorKey, [message body],
-                                      nil];
+            NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObject:@"An error occurred." forKey:NSLocalizedDescriptionKey];
+            if ([[message body] isKindOfClass:[NSString class]]) {
+                [userInfo setObject:[message body] forKey:NSLocalizedFailureReasonErrorKey];
+            }
             NSError *error = [NSError errorWithDomain:WSKErrorDomain code:WSKGenericError userInfo:userInfo];
             [_delegate webSocket:self didFailWithError:error];
         }
