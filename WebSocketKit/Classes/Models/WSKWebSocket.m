@@ -51,7 +51,7 @@ static NSString *const kOnOpenHandlerName = @"onopen";
     self = [super init];
     if (self) {
         _url = url;
-        _protocols = protocols;
+        _protocols = [protocols copy];
         WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
         WKUserContentController *userContentController = [[WKUserContentController alloc] init];
         [userContentController addScriptMessageHandler:self name:kOnCloseHandlerName];
