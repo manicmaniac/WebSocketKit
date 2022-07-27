@@ -48,6 +48,7 @@
     [_webSocket open];
     [_webSocket sendString:string];
     [_webSocket close];
+    [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
 - (void)testURL {
