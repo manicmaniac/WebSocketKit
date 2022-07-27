@@ -21,7 +21,7 @@ class ViewController: UIViewController, UITextFieldDelegate, WSKWebSocketDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         originalToolbarBottomLayoutConstraintConstant = toolbarBottomLayoutConstraint.constant
-        let url = URL(string: "ws://echo.websocket.org/")!
+        let url = URL(string: "ws://localhost:10000/")!
         let webSocket = WSKWebSocket(url: url)
         webSocket.delegate = self
         self.webSocket = webSocket
